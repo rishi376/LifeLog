@@ -15,6 +15,9 @@ import { UserService } from 'app/entities/user/user.service';
 import { EventLogBookService } from 'app/entities/event-log-book/service/event-log-book.service';
 import { TagsService } from 'app/entities/tags/service/tags.service';
 
+import {FormGroup, FormControl} from '@angular/forms';
+
+
 @Component({
   selector: 'jhi-event-log',
   templateUrl: './event-log.component.html',
@@ -25,6 +28,11 @@ export class EventLogComponent implements OnInit {
   filterEventLogs = '';
   filteredAndSortedEventLogs: IEventLog[] = [];
   orderProp: keyof IEventLog = 'name';
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   // For Edit Pop up
 
@@ -49,7 +57,7 @@ export class EventLogComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-
+    
     this.eventLogService.query().subscribe({
       next: (res: HttpResponse<IEventLog[]>) => {
         this.isLoading = false;
@@ -66,6 +74,12 @@ export class EventLogComponent implements OnInit {
     this.loadAll();
 
     this.loadRelationshipsOptions();
+  }
+
+  sortdate(): void{
+    const sortData = this.filteredAndSortedEventLogs.length>0? this.filteredAndSortedEventLogs : this.eventLogs;
+    this.filteredAndSortedEventLogs = sortData
+    .filter(eventLog => eventLog.createdDate && (eventLog.createdDate >= this.range.value.start && eventLog.createdDate <= this.range.value.end)).sort();
   }
 
   trackId(index: number, item: IEventLog): number {
