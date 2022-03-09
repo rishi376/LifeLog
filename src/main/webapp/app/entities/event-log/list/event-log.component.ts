@@ -68,6 +68,8 @@ export class EventLogComponent implements OnInit {
         this.isLoading = false;
       },
     });
+
+    this.filterAndSortEventLogs();
   }
 
   ngOnInit(): void {
@@ -97,15 +99,11 @@ export class EventLogComponent implements OnInit {
     });
   }
 
-  // Filtering based on name
-
   filterAndSortEventLogs(): void {
     this.filteredAndSortedEventLogs = this.eventLogs
-      .filter(eventLog => !this.filterEventLogs || eventLog.name?.toLowerCase().includes(this.filterEventLogs.toLowerCase()))
+      ?.filter(eventLog => !this.filterEventLogs || eventLog.name?.toLowerCase().includes(this.filterEventLogs.toLowerCase()))
       .sort();
   }
-
-  // Clear Button Function
 
   onClear(): void {
     this.filterEventLogs = '';
