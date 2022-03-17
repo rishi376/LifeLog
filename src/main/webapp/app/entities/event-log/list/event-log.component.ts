@@ -15,8 +15,7 @@ import { UserService } from 'app/entities/user/user.service';
 import { EventLogBookService } from 'app/entities/event-log-book/service/event-log-book.service';
 import { TagsService } from 'app/entities/tags/service/tags.service';
 
-import {FormGroup, FormControl} from '@angular/forms';
-
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'jhi-event-log',
@@ -57,7 +56,7 @@ export class EventLogComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-    
+
     this.eventLogService.query().subscribe({
       next: (res: HttpResponse<IEventLog[]>) => {
         this.isLoading = false;
@@ -78,10 +77,13 @@ export class EventLogComponent implements OnInit {
     this.loadRelationshipsOptions();
   }
 
-  sortdate(): void{
-    const sortData = this.filteredAndSortedEventLogs.length>0? this.filteredAndSortedEventLogs : this.eventLogs;
+  sortdate(): void {
+    const sortData = this.filteredAndSortedEventLogs.length > 0 ? this.filteredAndSortedEventLogs : this.eventLogs;
     this.filteredAndSortedEventLogs = sortData
-    .filter(eventLog => eventLog.createdDate && (eventLog.createdDate >= this.range.value.start && eventLog.createdDate <= this.range.value.end)).sort();
+      .filter(
+        eventLog => eventLog.createdDate && eventLog.createdDate >= this.range.value.start && eventLog.createdDate <= this.range.value.end
+      )
+      .sort();
   }
 
   trackId(index: number, item: IEventLog): number {
@@ -101,7 +103,7 @@ export class EventLogComponent implements OnInit {
 
   filterAndSortEventLogs(): void {
     this.filteredAndSortedEventLogs = this.eventLogs
-      ?.filter(eventLog => !this.filterEventLogs || eventLog.name?.toLowerCase().includes(this.filterEventLogs.toLowerCase()))
+      .filter(eventLog => !this.filterEventLogs || eventLog.name?.toLowerCase().includes(this.filterEventLogs.toLowerCase()))
       .sort();
   }
 
